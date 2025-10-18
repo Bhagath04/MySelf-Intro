@@ -1,0 +1,67 @@
+BHAGATH GAJBINKAR
+India | +91 8686552332
+gajbinkar.bhagath4@gmail.com | https://www.linkedin.com/in/gajbinkar-bhagath-b2a928126/
+SUMMARY
+A results-driven DevOps Manager with 8+ years of specialized experience in cloud-native deployments, automation, and the creation of highly scalable, secure infrastructure across both public and private cloud environments. Proven success in leading high-impact DevOps initiatives, driving continuous improvement in CI/CD pipeline efficiency, and pioneering cutting-edge infrastructure solutions. Expertise in accelerating time-to-market, increasing deployment reliability, and ensuring operational excellence. Adept at delivering robust, high-availability solutions and leading teams through the most complex enterprise transformations
+
+SKILLS 
+Technical Skills:
+DevOps Tools: GitHub, GitHub Actions, Azure DevOps, Bamboo, Jenkins (Basic)
+Middleware Solutions: IBM WebSphere, MuleSoft Anypoint Platform
+Containers & Orchestration: Kubernetes, Docker, OpenShift (exposure)
+Scripting & Configuration Management: Shell, YAML
+Infrastructure-as-Code (IaC): Terraform
+Monitoring & Reporting Tools: SonarQube, Zabbix, Prometheus (learning), Grafana (learning)
+Project & Repository Management: Jira, Confluence, Git, SVN
+Operating Systems: Linux
+
+Functional Skills: CI/CD Pipeline Development & Optimization ? Automation & Scripting ? Infrastructure Provisioning & Management ? Containerization & Orchestration ? Cloud Infrastructure Management ? Performance Monitoring & Incident Response ? Security & Compliance Automation ? Version Control Management & Release Coordination ? Collaboration with Cross-functional Teams (Dev, QA, IT, Clients) ? Stakeholder Management & Client Communication ? Team Leadership & Development ? Process Improvement & Automation Initiatives
+CAREER HIGHLIGHTS 
+* CI/CD Pipeline Optimization: Led the design and deployment of GitHub Actions CI/CD pipelines for over 550 TIBCO TCI applications, improving deployment efficiency.
+* Collaborative Release Management: Streamlined release processes across DEV, SIT, and UAT environments by closely collaborating with development and QA teams.
+* Infrastructure Automation: Spearheaded the automation of repetitive tasks and infrastructure provisioning using Shell scripting and Terraform across hybrid cloud environments.
+* Containerization: Played a key role in integrating Docker and Kubernetes into existing infrastructure, significantly improving flexibility and scalability.
+* Security & Compliance: Automated security processes, including vulnerability scanning, secret rotation, and compliance checks, within DevOps pipelines.
+* Performance Monitoring: Established monitoring solutions using Zabbix, SonarQube, and explored Prometheus/Grafana stacks to ensure optimal system performance.
+* MuleSoft Administration: Managed the MuleSoft Anypoint Platform, including business group setup and user access control, enabling smooth integration operations.
+* Cross-functional Leadership: Directed initiatives within the DevOps Center of Excellence (CoE), overseeing tool migrations, infrastructure modernization, and the adoption of new technologies.
+
+WORK EXPERIENCE
+DevOps Manager ? Cognizant Technology Solutions, India 
+Mar 2022 – Present
+* Managed the automation of CI/CD pipelines using GitHub Actions for TIBCO BusinessWorks (TCI) and Flogo applications, accelerating delivery cycles.
+* Administered 550+ GitHub repositories, ensuring optimized access control, branch protection, and automated workflows.
+* Administered MuleSoft Anypoint Platform, focusing on business group setups and user access management for seamless integrations.
+* Led the adoption of containerization technologies such as Docker and Kubernetes, enhancing application deployment flexibility.
+* Collaborated with clients and internal teams to assess and modernize cloud infrastructure, recommending and implementing best practices.
+
+Middleware & DevOps Administrator ? Deloitte, India
+Sep 2016 – Mar 2022
+* Managed IBM WebSphere environments, ensuring optimized application setup, performance tuning, and deployment.
+* Developed and maintained CI/CD pipelines using Bamboo, facilitating automated application deployment across different environments.
+* Automated system administration tasks and workflow processes using Shell scripting and cron jobs, enhancing operational efficiency.
+* Integrated observability tools like Zabbix into CI/CD workflows for real-time system monitoring and performance analysis.
+* Coordinated release activities, including troubleshooting and post-release triaging, to ensure smooth deployments.
+* Managed version control using Git and SVN, ensuring effective synchronization of development and deployment tasks.
+
+EDUCATION
+Bachelor of Science in Computer Science
+Bhavan’s Vivekananda College, Telangana, India, 2013 – 2016
+CERTIFICATIONS & RECOGNITIONS
+* GitHub Certified
+* Employee of the Month
+* Leadership Award
+* Best Performer Award
+* Superhero of the Team Award
+* Spot & Applause Awards
+
+LANGUAGES 
+English: Full Professional Proficiency, Hindi: Native, Telugu: Native
+WORK PREFERENCES & RELOCATION
+* Open to relocation or hybrid opportunities in Australia.
+* Experienced in working with international teams, including clients based in the EU.
+* Adaptable and proficient in cross-cultural, multilingual, and Agile environments. 
+
+
+
+

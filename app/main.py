@@ -6,59 +6,63 @@ from openai.error import OpenAIError, AuthenticationError, RateLimitError
 
 app = Flask(__name__)
 
-# Load profile
-with open('app/data/profile.json') as f:
+# --- Load profile ---
+with open('app/data/profile.json', 'r', encoding='utf-8') as f:
     profile = json.load(f)
 
-# OpenAI key from environment variable
+# --- Load resume text if available ---
+resume_text = ""
+resume_path = "app/data/Bhagath Gajbinkar_Resume.txt"
+if os.path.exists(resume_path):
+    with open(resume_path, 'r', encoding='utf-8') as r:
+        resume_text = r.read()
+
+# --- Set OpenAI API key from environment (Render/GitHub Secret) ---
 openai.api_key = os.getenv("OPENAI_API_KEY")
-
-def fallback_response(user_input):
-    """
-    Generate a natural response from the local profile.json
-    if OpenAI API fails.
-    """
-    user_input = user_input.lower()
-
-    if "education" in user_input:
-        return f"I completed {profile['education']}."
-    elif "experience" in user_input or "career" in user_input:
-        return f"{profile['experience']}"
-    elif "skills" in user_input:
-        return f"My core skills include: {', '.join(profile['skills'])}."
-    elif "certifications" in user_input:
-        return f"I am certified in {', '.join(profile['certifications'])}."
-    elif "about" in user_input or "yourself" in user_input:
-        return profile['summary']
-    elif "achievement" in user_input:
-        return "I have successfully managed DevOps teams and implemented automation for cloud-native deployments, improving efficiency and reliability."
-    else:
-        return "I’m Bhagath Gajbinkar, a DevOps professional. Feel free to ask me about my experience, skills, or education!"
 
 def get_ai_response(user_input):
     """
-    Use OpenAI ChatCompletion to respond to the user.
-    If quota exceeded, fallback to local response.
+    Gets chatbot response from OpenAI API.
+    Falls back to local profile/resume data on quota or auth errors.
     """
-    if not openai.api_key:
-        return fallback_response(user_input)
-
-    messages = [
-        {"role": "system", "content": "You are a helpful AI assistant."},
-        {"role": "user", "content": f"Answer questions based on this profile:\n{json.dumps(profile, indent=2)}\nUser asked: {user_input}"}
-    ]
-
     try:
+        prompt = f"""
+You are Bhagath Gajbinkar’s AI assistant. 
+Answer based on the following profile and resume information:
+
+PROFILE:
+{json.dumps(profile, indent=2)}
+
+RESUME:
+{resume_text}
+
+User: {user_input}
+Bot:
+"""
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
-            messages=messages,
-            max_tokens=300,
-            temperature=0.7
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=200,
+            temperature=0.7,
         )
-        return response.choices[0].message.content.strip()
-    except (RateLimitError, OpenAIError) as e:
-        # If quota exceeded or any OpenAI error, use fallback
-        return fallback_response(user_input)
+        return response.choices[0].message['content'].strip()
+
+    except openai.error.RateLimitError:
+        # When quota or rate limit is exceeded
+        return (
+            f"Currently I’m unable to access AI responses. "
+            f"Here’s some info about Bhagath:\n\n"
+            f"{profile['summary']}\n\n"
+            f"For more detailed discussions or project collaborations, "
+            f"please connect with him directly via phone or WhatsApp."
+        )
+    except openai.error.AuthenticationError:
+        return (
+            "Authentication error occurred — the API key may be missing or invalid. "
+            "Please check the deployment configuration."
+        )
+    except Exception as e:
+        return f"Sorry, something went wrong: {str(e)}"
 
 @app.route('/')
 def home():
@@ -66,11 +70,16 @@ def home():
 
 @app.route('/chat', methods=['POST'])
 def chat():
-    user_input = request.json.get('message', '')
-    if not user_input:
-        return jsonify({"reply": "Please enter a question."})
+    user_input = request.json['message']
+    # Add logic to detect if user is asking too many details
+    if any(word in user_input.lower() for word in ["salary", "phone", "number", "contact", "whatsapp"]):
+        response = (
+            "For privacy and detailed discussions, please connect directly via phone or WhatsApp. "
+            "Bhagath will be happy to assist you personally."
+        )
+    else:
+        response = get_ai_response(user_input)
 
-    response = get_ai_response(user_input)
     return jsonify({"reply": response})
 
 if __name__ == '__main__':

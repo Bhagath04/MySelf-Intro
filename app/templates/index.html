@@ -1,66 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bhagath Gajbinkar - AI Resume Chatbot</title>
-  <link rel="stylesheet" href="/static/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bhagath Gajbinkar - DevOps Chatbot</title>
+  <link rel="stylesheet" href="/static/style.css" />
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      background-color: #000; /* Black background */
-      color: white;
+      background-color: #0b0c10;
+      color: #fff;
     }
+
     .container {
       display: flex;
       min-height: 100vh;
     }
-    .profile-panel {
-      width: 300px;
-      background-color: #121212; /* dark panel */
-      color: white;
-      padding: 20px;
+
+    /* --- Left Section with DevOps GIFs --- */
+    .devops-panel {
+      width: 45%;
+      background: linear-gradient(135deg, #0a192f, #1e2a47);
+      padding: 40px;
       display: flex;
       flex-direction: column;
+      justify-content: center;
       align-items: center;
-    }
-    .profile-panel img {
-      width: 150px;
-      border-radius: 50%;
-      margin-bottom: 15px;
-    }
-    .profile-panel h2 {
-      margin: 10px 0 5px 0;
-      font-size: 20px;
-    }
-    .profile-panel p {
-      font-size: 14px;
-      text-align: center;
-      margin: 5px 0;
-    }
-    .profile-panel ul {
-      list-style: none;
-      padding: 0;
-      margin-top: 10px;
-      width: 100%;
-    }
-    .profile-panel ul li {
-      background-color: #1f1f1f;
-      padding: 5px 10px;
-      margin: 5px 0;
-      border-radius: 5px;
-      text-align: center;
-      font-size: 13px;
+      border-right: 2px solid #2ea44f;
     }
 
-    /* Floating chatbot icon */
+    .devops-panel img {
+      width: 200px;
+      height: 200px;
+      margin-bottom: 20px;
+      border-radius: 50%;
+      border: 2px solid #2ea44f;
+      object-fit: cover;
+    }
+
+    .devops-panel h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      color: #2ea44f;
+    }
+
+    .devops-panel p {
+      font-size: 16px;
+      text-align: center;
+      line-height: 1.5;
+      max-width: 400px;
+    }
+
+    .gif-section {
+      margin-top: 40px;
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .gif-section img {
+      width: 80px;
+      height: 80px;
+      border-radius: 10px;
+      border: 1px solid #2ea44f;
+      object-fit: cover;
+    }
+
+    /* --- Profile Section --- */
+    .profile-panel {
+      width: 55%;
+      padding: 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background-color: #101820;
+    }
+
+    .profile-panel h2 {
+      font-size: 26px;
+      margin-bottom: 10px;
+      color: #2ea44f;
+    }
+
+    .profile-panel p {
+      font-size: 16px;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+
+    .connect {
+      margin-top: 30px;
+      background: #1f1f1f;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .connect a {
+      color: #2ea44f;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: bold;
+    }
+
+    .connect a:hover {
+      text-decoration: underline;
+    }
+
+    /* --- Chatbot --- */
     #chatbot-icon {
       position: fixed;
       bottom: 30px;
       right: 30px;
-      width: 60px;
-      height: 60px;
+      width: 65px;
+      height: 65px;
       border-radius: 50%;
       background-color: #2ea44f;
       display: flex;
@@ -69,36 +123,38 @@
       color: white;
       font-size: 30px;
       cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
 
-    /* Popup chat window */
     #chatbot-window {
       display: none;
       position: fixed;
-      bottom: 100px;
+      bottom: 110px;
       right: 30px;
-      width: 350px;
-      height: 450px;
+      width: 370px;
+      height: 470px;
       background-color: #1a1a1a;
       border-radius: 10px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
       overflow: hidden;
       display: flex;
       flex-direction: column;
     }
+
     #chatbot-window header {
       background-color: #2ea44f;
       color: white;
-      padding: 10px;
+      padding: 12px;
       font-weight: bold;
       text-align: center;
     }
-    #chatbot-window #chat-box-popup {
+
+    #chat-box-popup {
       flex: 1;
       padding: 10px;
       overflow-y: auto;
     }
+
     .user-msg {
       text-align: right;
       margin: 5px 0;
@@ -109,6 +165,7 @@
       max-width: 70%;
       color: black;
     }
+
     .bot-msg {
       text-align: left;
       margin: 5px 0;
@@ -118,54 +175,76 @@
       border-radius: 15px;
       max-width: 70%;
     }
-    #chatbot-window .chat-input-popup {
+
+    .chat-input-popup {
       display: flex;
       gap: 5px;
       padding: 10px;
       border-top: 1px solid #333;
     }
-    #chatbot-window .chat-input-popup input {
+
+    .chat-input-popup input {
       flex: 1;
-      padding: 5px 10px;
+      padding: 8px 10px;
       border-radius: 20px;
       border: 1px solid #ccc;
       outline: none;
     }
-    #chatbot-window .chat-input-popup button {
+
+    .chat-input-popup button {
       background-color: #2ea44f;
       color: white;
       border: none;
-      padding: 5px 15px;
+      padding: 8px 15px;
       border-radius: 20px;
       cursor: pointer;
     }
+
+    .chat-input-popup button:hover {
+      background-color: #24913f;
+    }
   </style>
 </head>
+
 <body>
   <div class="container">
-    <!-- Left profile panel -->
-    <div class="profile-panel">
+    <!-- Left DevOps Themed Section -->
+    <div class="devops-panel">
       <img src="/static/BhaggNew.jpg" alt="{{ profile.name }}">
-      <h2>{{ profile.name }}</h2>
+      <h1>{{ profile.name }}</h1>
       <p>{{ profile.summary }}</p>
-      <ul>
-        <li>{{ profile.education }}</li>
-        <li>{{ profile.experience }}</li>
-        <li>Skills: {{ profile.skills | join(', ') }}</li>
-        <li>Certifications: {{ profile.certifications | join(', ') }}</li>
-      </ul>
+
+      <div class="gif-section">
+        <img src="https://media.giphy.com/media/iIqmM5tTjmpOB9mpbn/giphy.gif" alt="DevOps Flow" />
+        <img src="https://media.giphy.com/media/WUlplcMpOCEmTGBtBW/giphy.gif" alt="Cloud Automation" />
+        <img src="https://media.giphy.com/media/QHE5gWI0QjqF2/giphy.gif" alt="Code Deploy" />
+      </div>
+    </div>
+
+    <!-- Right Profile / About Section -->
+    <div class="profile-panel">
+      <h2>About Me</h2>
+      <p>{{ profile.experience }}</p>
+      <p>I specialize in DevOps automation, CI/CD pipelines, containerization with Docker and Kubernetes, and cloud deployments.</p>
+      <p>Passionate about building scalable, secure infrastructure and mentoring teams to deliver faster, reliable releases.</p>
+
+      <div class="connect">
+        <p>📞 For collaboration or job opportunities, reach out directly:</p>
+        <a href="tel:+91XXXXXXXXXX">Call</a> |
+        <a href="https://wa.me/91XXXXXXXXXX" target="_blank">WhatsApp</a> |
+        <a href="https://www.linkedin.com/in/bhagath-gajbinkar" target="_blank">LinkedIn</a>
+      </div>
     </div>
   </div>
 
-  <!-- Floating chatbot icon -->
+  <!-- Chatbot -->
   <div id="chatbot-icon" onclick="toggleChat()">💬</div>
 
-  <!-- Popup chat window -->
   <div id="chatbot-window">
     <header>Chat with Bhagath Bot</header>
     <div id="chat-box-popup"></div>
     <div class="chat-input-popup">
-      <input type="text" id="user-input-popup" placeholder="Ask me anything...">
+      <input type="text" id="user-input-popup" placeholder="Ask me anything..." />
       <button onclick="sendMessagePopup()">Send</button>
     </div>
   </div>
