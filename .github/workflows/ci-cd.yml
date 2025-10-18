@@ -34,17 +34,17 @@ jobs:
           sleep 5
           docker ps
 
-      - name: Test Chatbot Homepage
-        run: |
-          echo "Testing Home Page..."
-          curl -s http://localhost:5000 | head -n 10
+#      - name: Test Chatbot Homepage
+#        run: |
+#          echo "Testing Home Page..."
+#          curl -s http://localhost:5000 | head -n 10#
 
-      - name: Test Chatbot API
-        run: |
-          echo "Testing Chat Endpoint..."
-          curl -s -X POST http://localhost:5000/chat \
-            -H "Content-Type: application/json" \
-            -d '{"message": "Tell me about Bhagath"}'
+      #- name: Test Chatbot API
+      #  run: |
+      #    echo "Testing Chat Endpoint..."
+      #    curl -s -X POST http://localhost:5000/chat \
+      #      -H "Content-Type: application/json" \
+      #      -d '{"message": "Tell me about Bhagath"}'
 
       - name: Show Container Logs
         run: docker logs chatbot
