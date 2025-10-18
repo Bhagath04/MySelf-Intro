@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, make_response
 import json
 import os
 import openai
@@ -9,21 +9,18 @@ app = Flask(__name__)
 with open('app/data/profile.json') as f:
     profile = json.load(f)
 
-# OpenAI key from environment variable
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# To track if user has been greeted (for simplicity, global set)
-greeted_users = set()
-
-# Generate the menu options dynamically from JSON keys (except 'name' and 'summary')
 def get_options_text():
+    # Exclude 'name' and 'summary'
     keys = [k.capitalize() for k in profile.keys() if k not in ["name", "summary"]]
     return " | ".join(keys)
 
 def get_ai_response(user_input):
+    """Call OpenAI API for free-form questions."""
     try:
         prompt = f"""
-You are a chatbot. Answer questions based on this profile:
+You are a helpful chatbot. Answer questions based on this profile:
 {json.dumps(profile)}
 
 User: {user_input}
@@ -37,7 +34,7 @@ Bot:
         )
         return response.choices[0].message.content.strip()
     except Exception:
-        return None  # fallback to JSON if OpenAI fails
+        return None
 
 @app.route('/')
 def home():
@@ -48,42 +45,37 @@ def chat():
     user_input = request.json.get("message", "").strip()
     options_text = get_options_text()
 
-    # Greet user first time
-    if "first_greet" not in request.cookies:
+    # Check if greeted using cookie
+    greeted = request.cookies.get("greeted")
+
+    if not greeted:
         greeting = (
             f"Hello! 👋 Hope you are having a nice day.\n"
             f"What would you like to know about Bhagath? Here are the options:\n"
             f"{options_text}"
         )
-        return jsonify({"reply": greeting})
+        resp = make_response(jsonify({"reply": greeting}))
+        resp.set_cookie("greeted", "yes")
+        return resp
 
     lower_input = user_input.lower()
 
     # Handle sensitive requests
     if any(word in lower_input for word in ["salary", "ctc", "pay"]):
-        reply = (
-            "For privacy and detailed salary discussions, please contact Bhagath via email: "
-            "<your-email@example.com>"
-        )
+        reply = "For privacy and detailed salary discussions, please contact Bhagath via email: <your-email@example.com>"
     elif any(word in lower_input for word in ["resume", "cv"]):
-        reply = (
-            "You can view Bhagath's resume and professional profile on LinkedIn: "
-            "<your-linkedin-profile-url>"
-        )
+        reply = "You can view Bhagath's resume and professional profile on LinkedIn: <your-linkedin-profile-url>"
     elif any(word in lower_input for word in ["phone", "whatsapp", "contact"]):
-        reply = (
-            "For privacy reasons, please connect with Bhagath via email for contact details: "
-            "<your-email@example.com>"
-        )
+        reply = "For privacy reasons, please connect with Bhagath via email for contact details: <your-email@example.com>"
     elif any(word in lower_input for word in ["bye", "exit", "end"]):
         reply = "Thank you for chatting! Have a nice day! 👋"
     else:
-        # Match JSON keys dynamically
+        # Check if user typed one of the JSON keys (Education, Experience, Skills, etc.)
         matched = False
         for key, value in profile.items():
             if key in ["name", "summary"]:
                 continue
-            if key in lower_input or any(word in lower_input for word in key.split("_")):
+            if key.lower() in lower_input or any(word in lower_input for word in key.lower().split("_")):
                 if isinstance(value, list):
                     reply = f"{key.capitalize()}: " + ", ".join(value)
                 else:
@@ -91,20 +83,19 @@ def chat():
                 matched = True
                 break
 
+        # If no direct match, fallback to OpenAI
         if not matched:
-            # Try OpenAI
             ai_resp = get_ai_response(user_input)
             if ai_resp:
                 reply = ai_resp
             else:
-                # fallback generic summary
-                reply = profile.get("summary", "Sorry, I cannot answer that right now.")
+                reply = profile.get("Sorry, seems like there is an issue at present. Please contact Bhagath directly via mail or LikedIn")
 
-    # Always append options for guided flow
-    if "bye" not in lower_input and "exit" not in lower_input and "end" not in lower_input:
+    # Always show available options unless chat ended
+    if not any(word in lower_input for word in ["bye", "exit", "end"]):
         reply += f"\n\nYou can also ask about: {options_text}"
 
     return jsonify({"reply": reply})
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host='0.0.0.0', port=5000)
