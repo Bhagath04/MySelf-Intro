@@ -21,6 +21,8 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Validate Flask App
+        env:
+         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: python -m py_compile app/main.py
 
       - name: Build Docker Image

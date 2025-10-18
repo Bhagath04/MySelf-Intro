@@ -1,41 +1,41 @@
 from flask import Flask, request, jsonify, render_template
 import json
+import os
+import openai
 
 app = Flask(__name__)
 
+# Load profile
 with open('app/data/profile.json') as f:
     profile = json.load(f)
 
+# OpenAI key from environment variable (use GitHub Secrets)
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+def get_ai_response(user_input):
+    prompt = f"""
+You are a chatbot. Answer questions based on this profile:
+{json.dumps(profile)}
+
+User: {user_input}
+Bot:
+"""
+    response = openai.Completion.create(
+        engine="text-davinci-003",
+        prompt=prompt,
+        max_tokens=150,
+        temperature=0.7
+    )
+    return response.choices[0].text.strip()
+
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('index.html', profile=profile)
 
 @app.route('/chat', methods=['POST'])
 def chat():
-    user_input = request.json['message'].lower()
-    response = "I'm not sure I understand that."
-
-    # Keywords for various categories
-    experience_keywords = ["experience", "career", "worked", "background", "your experience"]
-    education_keywords = ["education", "degree", "study", "qualification"]
-    skills_keywords = ["skills", "technologies", "abilities"]
-    certifications_keywords = ["certifications", "certified", "accreditations"]
-    achievements_keywords = ["achievements", "success", "accomplishments", "awards"]
-    about_keywords = ["about", "yourself", "who are you", "introduce"]
-
-    if any(word in user_input for word in education_keywords):
-        response = profile['education']
-    elif any(word in user_input for word in experience_keywords):
-        response = profile['experience']
-    elif any(word in user_input for word in skills_keywords):
-        response = f"My core skills include: {', '.join(profile['skills'])}."
-    elif any(word in user_input for word in certifications_keywords):
-        response = f"I am {', '.join(profile['certifications'])}."
-    elif any(word in user_input for word in achievements_keywords):
-        response = "I have achieved significant results in automation, CI/CD, and cloud-native deployments throughout my career."
-    elif any(word in user_input for word in about_keywords):
-        response = profile['summary']
-
+    user_input = request.json['message']
+    response = get_ai_response(user_input)
     return jsonify({"reply": response})
 
 if __name__ == '__main__':

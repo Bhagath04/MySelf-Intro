@@ -1,15 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>AI Resume Chatbot</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bhagath Gajbinkar - AI Resume Chatbot</title>
   <link rel="stylesheet" href="/static/style.css">
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #f5f5f5; }
+    .container { display: flex; min-height: 100vh; }
+    .profile-panel { width: 300px; background-color: #24292f; color: white; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+    .profile-panel img { width: 150px; border-radius: 50%; margin-bottom: 15px; }
+    .profile-panel h2 { margin: 10px 0 5px 0; font-size: 20px; }
+    .profile-panel p { font-size: 14px; text-align: center; margin: 5px 0; }
+    .profile-panel ul { list-style: none; padding: 0; margin-top: 10px; width: 100%; }
+    .profile-panel ul li { background-color: #444c56; padding: 5px 10px; margin: 5px 0; border-radius: 5px; text-align: center; font-size: 13px; }
+    /* Right chat panel */
+    .chat-panel { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; position: relative; }
+    #chat-box { flex: 1; overflow-y: auto; padding: 20px; border-radius: 10px; background-color: white; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin-bottom: 10px; }
+    .user-msg { text-align: right; margin: 5px 0; background-color: #dcf8c6; display: inline-block; padding: 8px 12px; border-radius: 15px; max-width: 70%; }
+    .bot-msg { text-align: left; margin: 5px 0; background-color: #f1f0f0; display: inline-block; padding: 8px 12px; border-radius: 15px; max-width: 70%; }
+    .chat-input { display: flex; gap: 10px; }
+    .chat-input input { flex: 1; padding: 10px; border-radius: 20px; border: 1px solid #ccc; outline: none; }
+    .chat-input button { background-color: #2ea44f; color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; transition: background 0.3s; }
+    .chat-input button:hover { background-color: #22863a; }
+    /* Floating chatbot icon */
+    #chatbot-icon { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background-color: #2ea44f; display: flex; justify-content: center; align-items: center; color: white; font-size: 30px; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+    #chatbot-window { display: none; position: fixed; bottom: 100px; right: 30px; width: 350px; height: 450px; background-color: white; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); overflow: hidden; display: flex; flex-direction: column; }
+    #chatbot-window header { background-color: #2ea44f; color: white; padding: 10px; font-weight: bold; text-align: center; }
+    #chatbot-window #chat-box-popup { flex: 1; padding: 10px; overflow-y: auto; }
+    #chatbot-window .chat-input-popup { display: flex; gap: 5px; padding: 10px; border-top: 1px solid #ddd; }
+    #chatbot-window .chat-input-popup input { flex: 1; padding: 5px 10px; border-radius: 20px; border: 1px solid #ccc; outline: none; }
+    #chatbot-window .chat-input-popup button { background-color: #2ea44f; color: white; border: none; padding: 5px 15px; border-radius: 20px; cursor: pointer; }
+  </style>
 </head>
 <body>
-  <div class="chat-container">
-    <h2>Bhagath Gajbinkar - AI Resume Chatbot</h2>
-    <div id="chat-box"></div>
-    <input type="text" id="user-input" placeholder="Ask me about Bhagath...">
-    <button onclick="sendMessage()">Send</button>
+  <div class="container">
+    <!-- Left profile panel -->
+    <div class="profile-panel">
+      <img src="/static/BhaggNew.jpg" alt="{{ profile.name }}">
+      <h2>{{ profile.name }}</h2>
+      <p>{{ profile.summary }}</p>
+      <ul>
+        <li>{{ profile.education }}</li>
+        <li>{{ profile.experience }}</li>
+        <li>Skills: {{ profile.skills | join(', ') }}</li>
+        <li>Certifications: {{ profile.certifications | join(', ') }}</li>
+      </ul>
+    </div>
+
+    <!-- Right chat panel -->
+    <div class="chat-panel">
+      <div id="chat-box"></div>
+      <div class="chat-input">
+        <input type="text" id="user-input" placeholder="Ask me about Bhagath...">
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating chatbot icon -->
+  <div id="chatbot-icon" onclick="toggleChat()">💬</div>
+
+  <!-- Popup chat window -->
+  <div id="chatbot-window">
+    <header>Chat with Bhagath Bot</header>
+    <div id="chat-box-popup"></div>
+    <div class="chat-input-popup">
+      <input type="text" id="user-input-popup" placeholder="Ask me anything...">
+      <button onclick="sendMessagePopup()">Send</button>
+    </div>
   </div>
 
   <script>
@@ -17,16 +76,36 @@
       const input = document.getElementById('user-input');
       const message = input.value;
       const chatBox = document.getElementById('chat-box');
-
+      if(!message) return;
       chatBox.innerHTML += `<div class='user-msg'>${message}</div>`;
       input.value = '';
-
       const response = await fetch('/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message })
       });
+      const data = await response.json();
+      chatBox.innerHTML += `<div class='bot-msg'>${data.reply}</div>`;
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
 
+    function toggleChat() {
+      const popup = document.getElementById('chatbot-window');
+      popup.style.display = popup.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    async function sendMessagePopup() {
+      const input = document.getElementById('user-input-popup');
+      const message = input.value;
+      const chatBox = document.getElementById('chat-box-popup');
+      if(!message) return;
+      chatBox.innerHTML += `<div class='user-msg'>${message}</div>`;
+      input.value = '';
+      const response = await fetch('/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message })
+      });
       const data = await response.json();
       chatBox.innerHTML += `<div class='bot-msg'>${data.reply}</div>`;
       chatBox.scrollTop = chatBox.scrollHeight;
