@@ -30,9 +30,12 @@ jobs:
 
       - name: Run Chatbot Container
         run: |
-          docker run -d -p 5000:5000 --name chatbot myself-intro-chatbot
+          docker run -d -p 5000:5000 --name chatbot \
+            -e OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
+            myself-intro-chatbot
           sleep 5
           docker ps
+
 
 #      - name: Test Chatbot Homepage
 #        run: |
