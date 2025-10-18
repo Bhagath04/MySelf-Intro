@@ -47,7 +47,7 @@ jobs:
       #    echo "Testing Chat Endpoint..."
       #    curl -s -X POST http://localhost:5000/chat \
       #      -H "Content-Type: application/json" \
-      #      -d '{"message": "Tell me about Bhagath"}'
+      # ##     -d '{"message": "Tell me about Bhagath"}'
 
       - name: Show Container Logs
         run: docker logs chatbot
