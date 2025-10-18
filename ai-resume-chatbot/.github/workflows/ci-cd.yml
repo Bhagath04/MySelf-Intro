@@ -1,0 +1,42 @@
+name: AI Chatbot CI/CD
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run syntax check
+        run: python -m py_compile app/main.py
+
+      - name: Build Docker image
+        run: docker build -t ai-resume-chatbot .
+
+      - name: Run Docker container
+        run: |
+          docker run -d -p 5000:5000 --name chatbot ai-resume-chatbot
+          sleep 5
+          docker ps
+
+      - name: Test Chatbot Endpoint
+        run: |
+          echo "Testing chatbot endpoint..."
+          curl -s http://localhost:5000 | head -n 5
+          curl -s -X POST http://localhost:5000/chat -H "Content-Type: application/json" -d '{"message":"Tell me about Bhagath"}'
+
+      - name: Print container logs
+        run: docker logs chatbot
