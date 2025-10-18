@@ -1,3 +1,4 @@
+# app/main.py
 from flask import Flask, request, jsonify, render_template
 import json
 import os
@@ -13,20 +14,28 @@ with open('app/data/profile.json') as f:
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def get_ai_response(user_input):
-    prompt = f"""
-You are a chatbot. Answer questions based on this profile:
-{json.dumps(profile)}
+    """
+    Sends the user's question and profile data to OpenAI Chat API
+    and returns the response.
+    """
+    if not openai.api_key:
+        return "OpenAI API key not configured. Please set the environment variable OPENAI_API_KEY."
 
-User: {user_input}
-Bot:
-"""
-    response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=prompt,
-        max_tokens=150,
-        temperature=0.7
-    )
-    return response.choices[0].text.strip()
+    messages = [
+        {"role": "system", "content": "You are a helpful AI assistant."},
+        {"role": "user", "content": f"Answer questions based on this profile:\n{json.dumps(profile, indent=2)}\nUser asked: {user_input}"}
+    ]
+
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",  # Use gpt-4 if you have access
+            messages=messages,
+            max_tokens=300,
+            temperature=0.7
+        )
+        return response.choices[0].message.content.strip()
+    except Exception as e:
+        return f"Sorry, something went wrong: {str(e)}"
 
 @app.route('/')
 def home():
@@ -34,9 +43,13 @@ def home():
 
 @app.route('/chat', methods=['POST'])
 def chat():
-    user_input = request.json['message']
+    user_input = request.json.get('message', '')
+    if not user_input:
+        return jsonify({"reply": "Please enter a question."})
+
     response = get_ai_response(user_input)
     return jsonify({"reply": response})
 
 if __name__ == '__main__':
+    # Use 0.0.0.0 to make it accessible externally (Render requirement)
     app.run(host='0.0.0.0', port=5000)
