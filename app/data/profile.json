@@ -1,8 +1,38 @@
 {
   "name": "Bhagath Gajbinkar",
-  "summary": "A results-driven DevOps Manager with 8+ years of experience in automation, CI/CD, and cloud-native deployments.",
+  "summary": "A results-driven DevOps Manager with 8+ years of experience in automation, CI/CD, cloud-native deployments, and infrastructure management. Skilled in leading teams, optimizing workflows, and implementing best practices for software delivery.",
   "education": "Bachelor of Science in Computer Science from Bhavan’s Vivekananda College (2013–2016).",
-  "experience": "Currently working as a DevOps Manager at Cognizant, previously at Deloitte as Middleware & DevOps Administrator.",
-  "skills": ["GitHub", "Azure DevOps", "Kubernetes", "Docker", "Terraform", "Shell Scripting", "CI/CD", "Automation"],
-  "certifications": ["GitHub Certified"]
+  "experience": "Currently working as a DevOps Manager at Cognizant, leading automation and cloud infrastructure projects for enterprise clients. Previously worked at Deloitte as Middleware & DevOps Administrator, managing CI/CD pipelines, deployments, and system integrations for large-scale applications.",
+  "skills": [
+    "GitHub & GitHub Actions",
+    "Azure DevOps",
+    "Kubernetes & OpenShift",
+    "Docker & Containerization",
+    "Terraform & Infrastructure as Code",
+    "Shell Scripting & Automation",
+    "CI/CD Pipeline Design",
+    "Monitoring & Logging (Prometheus, ELK Stack)",
+    "Cloud Platforms: AWS, Azure",
+    "Disaster Recovery & Security Compliance"
+  ],
+  "certifications": [
+    "GitHub Certified",
+    "Azure DevOps Engineer Expert",
+    "Kubernetes Administrator (CKA) - in progress"
+  ],
+  "achievements": [
+    "Successfully led a team to migrate legacy applications to cloud-native architecture, reducing deployment time by 60%.",
+    "Automated multi-environment CI/CD pipelines for enterprise clients, improving release reliability and speed.",
+    "Designed and implemented robust monitoring and alerting solutions across DevOps workflows.",
+    "Mentored junior DevOps engineers, improving team efficiency and knowledge sharing."
+  ],
+  "personal_projects": [
+    "Developed an AI-based chatbot for internal knowledge sharing using OpenAI API.",
+    "Automated daily operational scripts, saving 10+ hours per week for the team."
+  ],
+  "interests": [
+    "Exploring cloud technologies and new automation tools",
+    "Contributing to open-source DevOps projects",
+    "Tech blogging and knowledge sharing"
+  ]
 }
