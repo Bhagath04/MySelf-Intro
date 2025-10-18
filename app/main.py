@@ -1,50 +1,40 @@
-from flask import Flask, request, jsonify, render_template
-import json
 import os
-from openai import OpenAI
-from openai.error import AuthenticationError, APIError, RateLimitError, PermissionDeniedError
+import json
+import openai
+from flask import Flask, request, jsonify, render_template
 
 app = Flask(__name__)
 
-# Load Bhagath's profile from JSON
+# Load profile
 with open('app/data/profile.json') as f:
     profile = json.load(f)
 
-# Initialize OpenAI client
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# OpenAI API key from environment variable
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def get_ai_response(user_input):
-    """Fetch AI-generated response or fallback to JSON profile."""
     try:
-        prompt = f"""
-You are an AI assistant that answers questions about this DevOps professional:
-{json.dumps(profile, indent=2)}
-
-Answer the user's question politely and clearly.
-If the question is not related to the profile, suggest connecting with Bhagath directly.
-User: {user_input}
-AI:
-"""
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": "You are a friendly and professional AI assistant helping users learn about Bhagath Gajbinkar."},
-                {"role": "user", "content": prompt}
+                {
+                    "role": "system",
+                    "content": "You are a professional AI assistant that answers questions about Bhagath Gajbinkar's profile."
+                },
+                {
+                    "role": "user",
+                    "content": f"Answer questions based on this profile:\n{json.dumps(profile)}\nUser: {user_input}"
+                }
             ],
-            max_tokens=200,
-            temperature=0.7
+            temperature=0.7,
+            max_tokens=200
         )
-        return response.choices[0].message.content.strip()
-
-    except (AuthenticationError, APIError, RateLimitError, PermissionDeniedError):
-        # Fallback when quota exceeded or API key invalid
+        return response.choices[0].message['content'].strip()
+    except openai.error.OpenAIError:
+        # Fallback response if API fails (quota exceeded etc.)
         return (
-            f"Sorry, I’m currently unable to access live AI responses. "
-            f"But here’s a quick summary of Bhagath:\n\n"
-            f"{profile['summary']}\n\n"
-            f"He is a {profile['experience']} "
-            f"Skilled in {', '.join(profile['skills'])}. "
-            f"For more details, please connect directly with Bhagath."
+            "I’m currently unable to answer detailed questions at present. "
+            "For more information, please connect with me via phone or WhatsApp."
         )
 
 @app.route('/')
@@ -53,10 +43,9 @@ def home():
 
 @app.route('/chat', methods=['POST'])
 def chat():
-    """Handle chat input from the frontend."""
     user_input = request.json['message']
 
-    # Privacy and sensitive information filter
+    # Handle sensitive/private info questions
     if any(word in user_input.lower() for word in ["salary", "phone", "number", "contact", "whatsapp"]):
         response = (
             "For privacy and detailed discussions, please connect directly via phone or WhatsApp. "
