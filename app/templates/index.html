@@ -30,28 +30,36 @@
       margin: auto;
     }
 
+    /* Left profile panel */
     .profile-card {
-      background: #000000;
+      background: #f0f4f8;
       border-radius: 16px;
       padding: 30px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .profile-card img.profile-photo {
+      width: 150px;
+      border-radius: 50%;
+      border: 3px solid #004aad;
+      margin-bottom: 20px;
     }
 
     .profile-card h1 {
-      margin-top: 0;
+      margin: 10px 0;
       color: #004aad;
       font-size: 28px;
     }
 
     .profile-card p {
       font-size: 16px;
-      color: #f5f5f5;
+      color: #333;
       line-height: 1.5;
     }
 
     .gif {
       margin-top: 20px;
-      text-align: center;
     }
 
     .gif img {
@@ -60,8 +68,9 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
+    /* Right chat panel */
     .chatbot {
-      background: #000000;
+      background: #f0f4f8;
       border-radius: 16px;
       padding: 30px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -142,12 +151,12 @@
     <div class="container">
       <!-- Left: Profile -->
       <div class="profile-card">
+        <img class="profile-photo" src="/static/BhaggNew.jpg" alt="{{ profile.name }}" />
         <h1>{{ profile.name }}</h1>
         <p>{{ profile.summary }}</p>
 
         <div class="gif">
-          <!-- Professional DevOps pipeline GIF -->
-          <img src="https://giphy.com/gifs/DigitalHarbor-kgUkCLMu3xhw1T6txv" alt="Professional DevOps Automation">
+          <img src="/static/devops-process.jpg" alt="Professional DevOps Automation">
         </div>
       </div>
 
