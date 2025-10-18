@@ -1,68 +1,51 @@
 from flask import Flask, request, jsonify, render_template
 import json
 import os
-import openai
-from openai.error import OpenAIError, AuthenticationError, RateLimitError
+from openai import OpenAI
+from openai.error import AuthenticationError, APIError, RateLimitError, PermissionDeniedError
 
 app = Flask(__name__)
 
-# --- Load profile ---
-with open('app/data/profile.json', 'r', encoding='utf-8') as f:
+# Load Bhagath's profile from JSON
+with open('app/data/profile.json') as f:
     profile = json.load(f)
 
-# --- Load resume text if available ---
-resume_text = ""
-resume_path = "app/data/Bhagath Gajbinkar_Resume.txt"
-if os.path.exists(resume_path):
-    with open(resume_path, 'r', encoding='utf-8') as r:
-        resume_text = r.read()
-
-# --- Set OpenAI API key from environment (Render/GitHub Secret) ---
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# Initialize OpenAI client
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def get_ai_response(user_input):
-    """
-    Gets chatbot response from OpenAI API.
-    Falls back to local profile/resume data on quota or auth errors.
-    """
+    """Fetch AI-generated response or fallback to JSON profile."""
     try:
         prompt = f"""
-You are Bhagath Gajbinkar’s AI assistant. 
-Answer based on the following profile and resume information:
-
-PROFILE:
+You are an AI assistant that answers questions about this DevOps professional:
 {json.dumps(profile, indent=2)}
 
-RESUME:
-{resume_text}
-
+Answer the user's question politely and clearly.
+If the question is not related to the profile, suggest connecting with Bhagath directly.
 User: {user_input}
-Bot:
+AI:
 """
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": prompt}],
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "You are a friendly and professional AI assistant helping users learn about Bhagath Gajbinkar."},
+                {"role": "user", "content": prompt}
+            ],
             max_tokens=200,
-            temperature=0.7,
+            temperature=0.7
         )
-        return response.choices[0].message['content'].strip()
+        return response.choices[0].message.content.strip()
 
-    except openai.error.RateLimitError:
-        # When quota or rate limit is exceeded
+    except (AuthenticationError, APIError, RateLimitError, PermissionDeniedError):
+        # Fallback when quota exceeded or API key invalid
         return (
-            f"Currently I’m unable to access AI responses. "
-            f"Here’s some info about Bhagath:\n\n"
+            f"Sorry, I’m currently unable to access live AI responses. "
+            f"But here’s a quick summary of Bhagath:\n\n"
             f"{profile['summary']}\n\n"
-            f"For more detailed discussions or project collaborations, "
-            f"please connect with him directly via phone or WhatsApp."
+            f"He is a {profile['experience']} "
+            f"Skilled in {', '.join(profile['skills'])}. "
+            f"For more details, please connect directly with Bhagath."
         )
-    except openai.error.AuthenticationError:
-        return (
-            "Authentication error occurred — the API key may be missing or invalid. "
-            "Please check the deployment configuration."
-        )
-    except Exception as e:
-        return f"Sorry, something went wrong: {str(e)}"
 
 @app.route('/')
 def home():
@@ -70,8 +53,10 @@ def home():
 
 @app.route('/chat', methods=['POST'])
 def chat():
+    """Handle chat input from the frontend."""
     user_input = request.json['message']
-    # Add logic to detect if user is asking too many details
+
+    # Privacy and sensitive information filter
     if any(word in user_input.lower() for word in ["salary", "phone", "number", "contact", "whatsapp"]):
         response = (
             "For privacy and detailed discussions, please connect directly via phone or WhatsApp. "

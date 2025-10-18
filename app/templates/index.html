@@ -4,275 +4,188 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bhagath Gajbinkar - DevOps Chatbot</title>
-  <link rel="stylesheet" href="/static/style.css" />
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1183/1183672.png" />
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      background-color: #0b0c10;
-      color: #fff;
+      padding: 0;
+      background: url('https://media.giphy.com/media/A06UFEx8jxEwU/giphy.gif') no-repeat center center fixed;
+      background-size: cover;
+      color: #222;
+    }
+
+    .overlay {
+      background-color: rgba(255, 255, 255, 0.88);
+      min-height: 100vh;
+      padding: 40px;
     }
 
     .container {
-      display: flex;
-      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      align-items: start;
+      max-width: 1200px;
+      margin: auto;
     }
 
-    /* --- Left Section with DevOps GIFs --- */
-    .devops-panel {
-      width: 45%;
-      background: linear-gradient(135deg, #0a192f, #1e2a47);
-      padding: 40px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      border-right: 2px solid #2ea44f;
+    .profile-card {
+      background: #000000;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
-    .devops-panel img {
-      width: 200px;
-      height: 200px;
-      margin-bottom: 20px;
-      border-radius: 50%;
-      border: 2px solid #2ea44f;
-      object-fit: cover;
-    }
-
-    .devops-panel h1 {
+    .profile-card h1 {
+      margin-top: 0;
+      color: #004aad;
       font-size: 28px;
-      margin-bottom: 10px;
-      color: #2ea44f;
     }
 
-    .devops-panel p {
+    .profile-card p {
       font-size: 16px;
+      color: #f5f5f5;
+      line-height: 1.5;
+    }
+
+    .gif {
+      margin-top: 20px;
       text-align: center;
-      line-height: 1.5;
-      max-width: 400px;
     }
 
-    .gif-section {
-      margin-top: 40px;
-      display: flex;
-      gap: 15px;
-      justify-content: center;
+    .gif img {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
-    .gif-section img {
-      width: 80px;
-      height: 80px;
+    .chatbot {
+      background: #000000;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .chatbot h2 {
+      margin-top: 0;
+      color: #004aad;
+    }
+
+    .chat-window {
+      border: 1px solid #ccc;
+      height: 400px;
+      overflow-y: auto;
+      background: white;
       border-radius: 10px;
-      border: 1px solid #2ea44f;
-      object-fit: cover;
-    }
-
-    /* --- Profile Section --- */
-    .profile-panel {
-      width: 55%;
-      padding: 60px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      background-color: #101820;
-    }
-
-    .profile-panel h2 {
-      font-size: 26px;
-      margin-bottom: 10px;
-      color: #2ea44f;
-    }
-
-    .profile-panel p {
-      font-size: 16px;
-      line-height: 1.5;
+      padding: 15px;
       margin-bottom: 15px;
     }
 
-    .connect {
-      margin-top: 30px;
-      background: #1f1f1f;
-      padding: 15px;
-      border-radius: 10px;
-      text-align: center;
+    .chat-message {
+      margin-bottom: 10px;
     }
 
-    .connect a {
-      color: #2ea44f;
-      text-decoration: none;
-      margin: 0 10px;
-      font-weight: bold;
-    }
-
-    .connect a:hover {
-      text-decoration: underline;
-    }
-
-    /* --- Chatbot --- */
-    #chatbot-icon {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      width: 65px;
-      height: 65px;
-      border-radius: 50%;
-      background-color: #2ea44f;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      font-size: 30px;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    }
-
-    #chatbot-window {
-      display: none;
-      position: fixed;
-      bottom: 110px;
-      right: 30px;
-      width: 370px;
-      height: 470px;
-      background-color: #1a1a1a;
-      border-radius: 10px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    #chatbot-window header {
-      background-color: #2ea44f;
-      color: white;
-      padding: 12px;
-      font-weight: bold;
-      text-align: center;
-    }
-
-    #chat-box-popup {
-      flex: 1;
-      padding: 10px;
-      overflow-y: auto;
-    }
-
-    .user-msg {
+    .user-message {
       text-align: right;
-      margin: 5px 0;
-      background-color: #2ea44f;
-      display: inline-block;
-      padding: 8px 12px;
-      border-radius: 15px;
-      max-width: 70%;
-      color: black;
+      color: #004aad;
+      font-weight: 600;
     }
 
-    .bot-msg {
+    .bot-message {
       text-align: left;
-      margin: 5px 0;
-      background-color: #333;
+      background: #e8f0fe;
       display: inline-block;
       padding: 8px 12px;
-      border-radius: 15px;
-      max-width: 70%;
+      border-radius: 8px;
+      max-width: 85%;
     }
 
-    .chat-input-popup {
-      display: flex;
-      gap: 5px;
+    input[type="text"] {
+      width: 75%;
       padding: 10px;
-      border-top: 1px solid #333;
-    }
-
-    .chat-input-popup input {
-      flex: 1;
-      padding: 8px 10px;
-      border-radius: 20px;
-      border: 1px solid #ccc;
+      border: 1px solid #aaa;
+      border-radius: 8px;
       outline: none;
     }
 
-    .chat-input-popup button {
-      background-color: #2ea44f;
+    button {
+      padding: 10px 16px;
+      background-color: #004aad;
       color: white;
       border: none;
-      padding: 8px 15px;
-      border-radius: 20px;
+      border-radius: 8px;
       cursor: pointer;
+      transition: background 0.3s ease;
     }
 
-    .chat-input-popup button:hover {
-      background-color: #24913f;
+    button:hover {
+      background-color: #0077ff;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #555;
+      font-size: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
-
 <body>
-  <div class="container">
-    <!-- Left DevOps Themed Section -->
-    <div class="devops-panel">
-      <img src="/static/BhaggNew.jpg" alt="{{ profile.name }}">
-      <h1>{{ profile.name }}</h1>
-      <p>{{ profile.summary }}</p>
+  <div class="overlay">
+    <div class="container">
+      <!-- Left: Profile -->
+      <div class="profile-card">
+        <h1>{{ profile.name }}</h1>
+        <p>{{ profile.summary }}</p>
 
-      <div class="gif-section">
-        <img src="https://media.giphy.com/media/iIqmM5tTjmpOB9mpbn/giphy.gif" alt="DevOps Flow" />
-        <img src="https://media.giphy.com/media/WUlplcMpOCEmTGBtBW/giphy.gif" alt="Cloud Automation" />
-        <img src="https://media.giphy.com/media/QHE5gWI0QjqF2/giphy.gif" alt="Code Deploy" />
+        <div class="gif">
+          <!-- Professional DevOps pipeline GIF -->
+          <img src="https://giphy.com/gifs/DigitalHarbor-kgUkCLMu3xhw1T6txv" alt="Professional DevOps Automation">
+        </div>
+      </div>
+
+      <!-- Right: Chatbot -->
+      <div class="chatbot">
+        <h2>💬 Chat with Bhagath’s DevOps Bot</h2>
+        <div class="chat-window" id="chat-window"></div>
+        <input type="text" id="user-input" placeholder="Ask about Bhagath or DevOps..." />
+        <button onclick="sendMessage()">Send</button>
       </div>
     </div>
 
-    <!-- Right Profile / About Section -->
-    <div class="profile-panel">
-      <h2>About Me</h2>
-      <p>{{ profile.experience }}</p>
-      <p>I specialize in DevOps automation, CI/CD pipelines, containerization with Docker and Kubernetes, and cloud deployments.</p>
-      <p>Passionate about building scalable, secure infrastructure and mentoring teams to deliver faster, reliable releases.</p>
-
-      <div class="connect">
-        <p>📞 For collaboration or job opportunities, reach out directly:</p>
-        <a href="tel:+91XXXXXXXXXX">Call</a> |
-        <a href="https://wa.me/91XXXXXXXXXX" target="_blank">WhatsApp</a> |
-        <a href="https://www.linkedin.com/in/bhagath-gajbinkar" target="_blank">LinkedIn</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Chatbot -->
-  <div id="chatbot-icon" onclick="toggleChat()">💬</div>
-
-  <div id="chatbot-window">
-    <header>Chat with Bhagath Bot</header>
-    <div id="chat-box-popup"></div>
-    <div class="chat-input-popup">
-      <input type="text" id="user-input-popup" placeholder="Ask me anything..." />
-      <button onclick="sendMessagePopup()">Send</button>
-    </div>
+    <footer>© 2025 Bhagath Gajbinkar | DevOps Engineer | Powered by Flask + OpenAI</footer>
   </div>
 
   <script>
-    function toggleChat() {
-      const popup = document.getElementById('chatbot-window');
-      popup.style.display = popup.style.display === 'flex' ? 'none' : 'flex';
-    }
-
-    async function sendMessagePopup() {
-      const input = document.getElementById('user-input-popup');
-      const message = input.value;
-      const chatBox = document.getElementById('chat-box-popup');
+    async function sendMessage() {
+      const input = document.getElementById('user-input');
+      const message = input.value.trim();
       if (!message) return;
 
-      chatBox.innerHTML += `<div class='user-msg'>${message}</div>`;
+      const chatWindow = document.getElementById('chat-window');
+      chatWindow.innerHTML += `<div class="chat-message user-message">${message}</div>`;
       input.value = '';
 
-      const response = await fetch('/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message })
-      });
+      try {
+        const response = await fetch('/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message })
+        });
+        const data = await response.json();
+        chatWindow.innerHTML += `<div class="chat-message bot-message">${data.reply}</div>`;
+      } catch (error) {
+        chatWindow.innerHTML += `<div class="chat-message bot-message">Sorry, something went wrong.</div>`;
+      }
 
-      const data = await response.json();
-      chatBox.innerHTML += `<div class='bot-msg'>${data.reply}</div>`;
-      chatBox.scrollTop = chatBox.scrollHeight;
+      chatWindow.scrollTop = chatWindow.scrollHeight;
     }
   </script>
 </body>
