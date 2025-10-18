@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build-test-deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,23 +20,29 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run syntax check
+      - name: Validate Flask App
         run: python -m py_compile app/main.py
 
-      - name: Build Docker image
-        run: docker build -t ai-resume-chatbot .
+      - name: Build Docker Image
+        run: docker build -t myself-intro-chatbot .
 
-      - name: Run Docker container
+      - name: Run Chatbot Container
         run: |
-          docker run -d -p 5000:5000 --name chatbot ai-resume-chatbot
+          docker run -d -p 5000:5000 --name chatbot myself-intro-chatbot
           sleep 5
           docker ps
 
-      - name: Test Chatbot Endpoint
+      - name: Test Chatbot Homepage
         run: |
-          echo "Testing chatbot endpoint..."
-          curl -s http://localhost:5000 | head -n 5
-          curl -s -X POST http://localhost:5000/chat -H "Content-Type: application/json" -d '{"message":"Tell me about Bhagath"}'
+          echo "Testing Home Page..."
+          curl -s http://localhost:5000 | head -n 10
 
-      - name: Print container logs
+      - name: Test Chatbot API
+        run: |
+          echo "Testing Chat Endpoint..."
+          curl -s -X POST http://localhost:5000/chat \
+            -H "Content-Type: application/json" \
+            -d '{"message": "Tell me about Bhagath"}'
+
+      - name: Show Container Logs
         run: docker logs chatbot
