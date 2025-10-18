@@ -1,7 +1,7 @@
-import os
-import json
-import openai
 from flask import Flask, request, jsonify, render_template
+import json
+import os
+import openai
 
 app = Flask(__name__)
 
@@ -9,73 +9,81 @@ app = Flask(__name__)
 with open('app/data/profile.json') as f:
     profile = json.load(f)
 
-# OpenAI API key from environment variable
+# OpenAI key from environment variable (GitHub Secrets)
 openai.api_key = os.getenv("OPENAI_API_KEY")
+
+# Track first interaction
+first_interaction_done = False
 
 def get_ai_response(user_input):
     """
-    Try OpenAI API for dynamic responses.
-    If it fails, fallback to JSON-based intelligent answers.
+    Uses OpenAI to respond. If quota is exceeded or error, fallback to JSON profile.
     """
+    # Define keyword mapping for JSON fallback
+    fallback_map = {
+        "experience": profile["experience"],
+        "education": profile.get("education", ""),
+        "skills": ", ".join(profile.get("skills", [])),
+        "certifications": ", ".join(profile.get("certifications", [])),
+        "summary": profile["summary"],
+        "name": profile["name"]
+    }
+
+    # If user asks about contact details
+    if any(word in user_input.lower() for word in ["phone", "number", "contact", "whatsapp"]):
+        return (
+            "For privacy and detailed discussions, please connect directly via phone or WhatsApp. "
+            "Bhagath will be happy to assist you personally."
+        )
+
+    # If user ends chat
+    if any(word in user_input.lower() for word in ["bye", "exit", "thank"]):
+        return "It was nice chatting with you! Have a great day! 👋"
+
+    # Fallback to profile if keywords match
+    for key in fallback_map:
+        if key in user_input.lower():
+            return fallback_map[key]
+
+    # Try OpenAI API
     try:
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
-                {
-                    "role": "system",
-                    "content": "You are a professional AI assistant answering questions about Bhagath Gajbinkar's profile."
-                },
-                {
-                    "role": "user",
-                    "content": f"Answer based on this profile:\n{json.dumps(profile)}\nUser question: {user_input}"
-                }
+                {"role": "system", "content": f"You are a helpful assistant answering questions about Bhagath Gajbinkar using this profile: {json.dumps(profile)}"},
+                {"role": "user", "content": user_input}
             ],
-            temperature=0.7,
-            max_tokens=200
+            max_tokens=200,
+            temperature=0.7
         )
-        return response.choices[0].message['content'].strip()
-    except openai.error.OpenAIError:
-        # Fallback: check for specific keywords in JSON
-        user_input_lower = user_input.lower()
-        if "experience" in user_input_lower or "career" in user_input_lower:
-            return f"Hello! Regarding my experience: {profile.get('experience', '')}"
-        elif "education" in user_input_lower or "degree" in user_input_lower:
-            return f"My education background: {profile.get('education', '')}"
-        elif "skills" in user_input_lower:
-            return f"My skills include: {', '.join(profile.get('skills', []))}."
-        elif "certifications" in user_input_lower:
-            return f"My certifications: {', '.join(profile.get('certifications', []))}."
-        elif "about" in user_input_lower or "yourself" in user_input_lower:
-            return profile.get('summary', '')
-        else:
-            return (
-                f"Sorry, I can't answer that with AI right now. "
-                f"Here's some info from my profile: {profile.get('summary', '')}"
-            )
+        return response.choices[0].message.content.strip()
+    except Exception:
+        # fallback to generic answer from profile
+        return profile["summary"]
+
 
 @app.route('/')
 def home():
     return render_template('index.html', profile=profile)
 
+
 @app.route('/chat', methods=['POST'])
 def chat():
-    user_input = request.json.get('message', '')
+    global first_interaction_done
+    user_input = request.json['message']
 
-    # Detect private/contact questions
-    if any(word in user_input.lower() for word in ["salary", "phone", "number", "contact", "whatsapp"]):
-        response = (
-            "For privacy and detailed discussions, please connect directly via phone or WhatsApp. "
-            "Bhagath will be happy to assist you personally."
+    # Add greeting on first user message
+    if not first_interaction_done:
+        first_interaction_done = True
+        greeting = (
+            "Hello! 👋 Hope you are having a nice day. "
         )
-    # Detect initial greeting (empty message or first connection)
-    elif user_input.strip() == "":
-        response = (
-            "Hello! 👋 I am Bhagath's AI assistant. You can ask me about his experience, skills, certifications, or any professional details."
-        )
+        reply = greeting + " " + get_ai_response(user_input)
     else:
-        response = get_ai_response(user_input)
+        reply = get_ai_response(user_input)
 
-    return jsonify({"reply": response})
+    return jsonify({"reply": reply})
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
