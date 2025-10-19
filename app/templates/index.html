@@ -141,7 +141,11 @@
     </section>
     <section>
         <h2>Work-Experienc</h2>
-        <p>{{ profile.work-experience }}</p>
+        <ul>
+            {% for item in profile["work-experience"] %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
     </section>
     <section>
         <h2>Education</h2>
