@@ -2,30 +2,19 @@
   "name": "Bhagath Gajbinkar",
   "summary": "A results-driven DevOps Manager with 8+ years of experience in automation, CI/CD, cloud-native deployments, and infrastructure management. Skilled in leading teams, optimizing workflows, and implementing best practices for software delivery.",
   "education": "Bachelor of Science in Computer Science from Bhavan’s Vivekananda College (2013–2016).",
+  "experience": "Currently working as a DevOps Manager at Cognizant, leading automation and cloud infrastructure projects for enterprise clients. Previously worked at Deloitte as Middleware & DevOps Administrator, managing CI/CD pipelines, deployments, and system integrations for large-scale applications.",
   "work-experience": [
-    {
-      "role": "DevOps Manager │ Cognizant │ India",
-      "duration": "Apr 2022 – Present",
-      "details": [
-        "Managed the automation of CI/CD pipelines using GitHub Actions for TIBCO BusinessWorks (TCI) and Flogo applications, accelerating delivery cycles.",
-        "Administered 550+ GitHub repositories, ensuring optimized access control, branch protection, and automated workflows.",
-        "Administered MuleSoft Anypoint Platform, focusing on business group setups and user access management for seamless integrations.",
-        "Led the adoption of containerization technologies such as Docker and Kubernetes, enhancing application deployment flexibility.",
-        "Collaborated with clients and internal teams to assess and modernize cloud infrastructure, recommending and implementing best practices."
-      ]
-    },
-    {
-      "role": "Middleware & DevOps Administrator │ Deloitte │ India",
-      "duration": "Sep 2016 – Mar 2022",
-      "details": [
-        "Managed IBM WebSphere environments, ensuring optimized application setup, performance tuning, and deployment.",
-        "Developed and maintained CI/CD pipelines using Bamboo, facilitating automated application deployment across different environments.",
-        "Automated system administration tasks and workflow processes using Shell scripting and cron jobs, enhancing operational efficiency.",
-        "Integrated observability tools like Zabbix into CI/CD workflows for real-time system monitoring and performance analysis.",
-        "Coordinated release activities, including troubleshooting and post-release triaging, to ensure smooth deployments.",
-        "Managed version control using Git and SVN, ensuring effective synchronization of development and deployment tasks."
-      ]
-    }
+    "Managed the automation of CI/CD pipelines using GitHub Actions for TIBCO BusinessWorks (TCI) and Flogo applications, accelerating delivery cycles.",
+    "Administered 550+ GitHub repositories, ensuring optimized access control, branch protection, and automated workflows.",
+    "Administered MuleSoft Anypoint Platform, focusing on business group setups and user access management for seamless integrations.",
+    "Led the adoption of containerization technologies such as Docker and Kubernetes, enhancing application deployment flexibility.",
+    "Collaborated with clients and internal teams to assess and modernize cloud infrastructure, recommending and implementing best practices.",
+    "Managed IBM WebSphere environments, ensuring optimized application setup, performance tuning, and deployment.",
+    "Developed and maintained CI/CD pipelines using Bamboo, facilitating automated application deployment across different environments.",
+    "Automated system administration tasks and workflow processes using Shell scripting and cron jobs, enhancing operational efficiency.",
+    "Integrated observability tools like Zabbix into CI/CD workflows for real-time system monitoring and performance analysis.",
+    "Coordinated release activities, including troubleshooting and post-release triaging, to ensure smooth deployments.",
+    "Managed version control using Git and SVN, ensuring effective synchronization of development and deployment tasks."
   ],
   "skills": [
     "GitHub & GitHub Actions",

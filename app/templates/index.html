@@ -126,7 +126,7 @@
 <body>
     <header>
         <div class="header-container">
-            <img src="{{ url_for('static', filename='static/BhaggNew.jpg') }}" alt="Profile Photo" class="profile-pic">
+            <img src="{{ url_for('static', filename='BhaggNew.jpg') }}" alt="{{ profile.name }}">
             <div class="header-text">
                 <h1>{{ profile.name }}</h1>
                 <p>{{ profile.summary }}</p>
@@ -139,7 +139,10 @@
         <h2>Experience</h2>
         <p>{{ profile.experience }}</p>
     </section>
-
+    <section>
+        <h2>Work-Experienc</h2>
+        <p>{{ profile.work-experience }}</p>
+    </section>
     <section>
         <h2>Education</h2>
         <p>{{ profile.education }}</p>
@@ -194,8 +197,8 @@
         <p>Connect with Bhagath</p>
         <div class="social-links">
             <a href="mailto:gajbinkar.bhagath4@gmail.com">Email</a> |
-            <a href="www.linkedin.com/in/gajbinkar-bhagath-b2a928126" target="_blank">LinkedIn</a> |
-            <a href="https://github.com/Bhagath04" target="_blank">GitHub</a>
+            <a href="www.linkedin.com/in/gajbinkar-bhagath-b2a928126" target="www.linkedin.com/in/gajbinkar-bhagath-b2a928126">LinkedIn</a> |
+            <a href="https://github.com/Bhagath04" target="https://github.com/Bhagath04">GitHub</a>
         </div>
         <p style="margin-top: 1rem;">© {{ profile.name }} | Have a great day! 😊</p>
     </footer>
