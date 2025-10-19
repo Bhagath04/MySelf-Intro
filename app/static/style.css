@@ -13,6 +13,16 @@ body {
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   width: 400px;
 }
+.profile-photo {
+    width: 180px;       /* controls width */
+    height: 180px;      /* controls height */
+    object-fit: cover;  /* ensures image doesn’t stretch */
+    border-radius: 50%; /* makes it circular */
+    border: 3px solid #004aad; /* optional border */
+    display: block;
+    margin: 0 auto;     /* center align if needed */
+}
+
 #chat-box {
   height: 300px;
   overflow-y: auto;

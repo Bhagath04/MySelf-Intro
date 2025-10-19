@@ -130,7 +130,7 @@
             <div class="header-text">
                 <h1>{{ profile.name }}</h1>
                 <p>{{ profile.summary }}</p>
-                <a href="www.linkedin.com/in/gajbinkar-bhagath-b2a928126" target="_blank" class="download-btn">View LinkedIn</a>
+                <a href="www.linkedin.com/in/gajbinkar-bhagath-b2a928126" target="_blank" rel="noopener noreferrer" class="download-btn">View LinkedIn</a>
             </div>
         </div>
     </header>
@@ -140,7 +140,7 @@
         <p>{{ profile.experience }}</p>
     </section>
     <section>
-        <h2>Work-Experienc</h2>
+        <h2>Work-Experience</h2>
         <ul>
             {% for item in profile["work-experience"] %}
                 <li>{{ item }}</li>
@@ -201,8 +201,8 @@
         <p>Connect with Bhagath</p>
         <div class="social-links">
             <a href="mailto:gajbinkar.bhagath4@gmail.com">Email</a> |
-            <a href="www.linkedin.com/in/gajbinkar-bhagath-b2a928126" target="www.linkedin.com/in/gajbinkar-bhagath-b2a928126">LinkedIn</a> |
-            <a href="https://github.com/Bhagath04" target="https://github.com/Bhagath04">GitHub</a>
+            <a href="www.linkedin.com/in/gajbinkar-bhagath-b2a928126" target="www.linkedin.com/in/gajbinkar-bhagath-b2a928126" rel="noopener noreferrer">LinkedIn</a> |
+            <a href="https://github.com/Bhagath04" target="https://github.com/Bhagath04" rel="noopener noreferrer">GitHub</a>
         </div>
         <p style="margin-top: 1rem;">© {{ profile.name }} | Have a great day! 😊</p>
     </footer>
