@@ -1,201 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bhagath Gajbinkar - DevOps Chatbot</title>
-  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1183/1183672.png" />
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: url('https://media.giphy.com/media/A06UFEx8jxEwU/giphy.gif') no-repeat center center fixed;
-      background-size: cover;
-      color: #222;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ profile.name }} - DevOps Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
 
-    .overlay {
-      background-color: rgba(255, 255, 255, 0.88);
-      min-height: 100vh;
-      padding: 40px;
-    }
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
 
-    .container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 30px;
-      align-items: start;
-      max-width: 1200px;
-      margin: auto;
-    }
+        header {
+            background: linear-gradient(to right, #007bff, #00bfff);
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+        }
 
-    /* Left profile panel */
-    .profile-card {
-      background: #f0f4f8;
-      border-radius: 16px;
-      padding: 30px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      text-align: center;
-    }
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
 
-    .profile-card img.profile-photo {
-      width: 150px;
-      border-radius: 50%;
-      border: 3px solid #004aad;
-      margin-bottom: 20px;
-    }
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            object-fit: cover;
+        }
 
-    .profile-card h1 {
-      margin: 10px 0;
-      color: #004aad;
-      font-size: 28px;
-    }
+        .header-text {
+            max-width: 600px;
+        }
 
-    .profile-card p {
-      font-size: 16px;
-      color: #333;
-      line-height: 1.5;
-    }
+        .header-text h1 {
+            font-size: 2rem;
+            font-weight: 600;
+        }
 
-    .DevOps {
-      margin-top: 20px;
-    }
+        .header-text p {
+            margin-top: 0.5rem;
+            font-size: 1rem;
+        }
 
-    .DevOps img {
-      font-size: 8px;
-      color: #333;
-      line-height: 1.0;
-    }
+        section {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
 
-    /* Right chat panel */
-    .chatbot {
-      background: #f0f4f8;
-      border-radius: 16px;
-      padding: 30px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
+        section h2 {
+            color: #007bff;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #00bfff;
+            display: inline-block;
+            padding-bottom: 0.3rem;
+        }
 
-    .chatbot h2 {
-      margin-top: 0;
-      color: #004aad;
-    }
+        ul {
+            list-style-type: none;
+            margin-top: 1rem;
+        }
 
-    .chat-window {
-      border: 1px solid #ccc;
-      height: 400px;
-      overflow-y: auto;
-      background: white;
-      border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 15px;
-    }
+        li {
+            margin-bottom: 0.5rem;
+        }
 
-    .chat-message {
-      margin-bottom: 10px;
-    }
+        footer {
+            background: #007bff;
+            color: white;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 3rem;
+        }
 
-    .user-message {
-      text-align: right;
-      color: #004aad;
-      font-weight: 600;
-    }
+        .social-links a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+        }
 
-    .bot-message {
-      text-align: left;
-      background: #e8f0fe;
-      display: inline-block;
-      padding: 8px 12px;
-      border-radius: 8px;
-      max-width: 85%;
-    }
+        .social-links a:hover {
+            text-decoration: underline;
+        }
 
-    input[type="text"] {
-      width: 75%;
-      padding: 10px;
-      border: 1px solid #aaa;
-      border-radius: 8px;
-      outline: none;
-    }
+        .download-btn {
+            display: inline-block;
+            background: white;
+            color: #007bff;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1rem;
+            border: 2px solid white;
+            transition: 0.3s;
+        }
 
-    button {
-      padding: 10px 16px;
-      background-color: #004aad;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #0077ff;
-    }
-
-    footer {
-      text-align: center;
-      margin-top: 40px;
-      color: #555;
-      font-size: 14px;
-    }
-
-    @media (max-width: 900px) {
-      .container {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+        .download-btn:hover {
+            background: #00bfff;
+            color: white;
+            border: 2px solid white;
+        }
+    </style>
 </head>
 <body>
-  <div class="overlay">
-    <div class="container">
-      <!-- Left: Profile -->
-      <div class="profile-card">
-        <img class="profile-photo" src="/static/BhaggNew.jpg" alt="{{ profile.name }}" />
-        <h1>{{ profile.name }}</h1>
-        <p>{{ profile.summary }}</p>
-
-        <div class="DevOps">
-          <img class="DevOps" src="/static/devops-process.jpg" alt="Professional DevOps Automation">
+    <header>
+        <div class="header-container">
+            <img src="{{ url_for('static', filename='static/BhaggNew.jpg') }}" alt="Profile Photo" class="profile-pic">
+            <div class="header-text">
+                <h1>{{ profile.name }}</h1>
+                <p>{{ profile.summary }}</p>
+                <a href="https://www.linkedin.com/in/bhagath-gajbinkar" target="_blank" class="download-btn">View LinkedIn</a>
+            </div>
         </div>
-      </div>
+    </header>
 
-      <!-- Right: Chatbot -->
-      <div class="chatbot">
-        <h2>💬 Chat with Bhagath’s DevOps Bot</h2>
-        <div class="chat-window" id="chat-window"></div>
-        <input type="text" id="user-input" placeholder="Ask about Bhagath or DevOps..." />
-        <button onclick="sendMessage()">Send</button>
-      </div>
-    </div>
+    <section>
+        <h2>Experience</h2>
+        <p>{{ profile.experience }}</p>
+    </section>
 
-    <footer>© 2025 Bhagath Gajbinkar | DevOps Engineer | Powered by Flask + OpenAI</footer>
-  </div>
+    <section>
+        <h2>Education</h2>
+        <p>{{ profile.education }}</p>
+    </section>
 
-  <script>
-    async function sendMessage() {
-      const input = document.getElementById('user-input');
-      const message = input.value.trim();
-      if (!message) return;
+    <section>
+        <h2>Skills</h2>
+        <ul>
+            {% for skill in profile.skills %}
+                <li>✔️ {{ skill }}</li>
+            {% endfor %}
+        </ul>
+    </section>
 
-      const chatWindow = document.getElementById('chat-window');
-      chatWindow.innerHTML += `<div class="chat-message user-message">${message}</div>`;
-      input.value = '';
+    <section>
+        <h2>Certifications</h2>
+        <ul>
+            {% for cert in profile.certifications %}
+                <li>🏆 {{ cert }}</li>
+            {% endfor %}
+        </ul>
+    </section>
 
-      try {
-        const response = await fetch('/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message })
-        });
-        const data = await response.json();
-        chatWindow.innerHTML += `<div class="chat-message bot-message">${data.reply}</div>`;
-      } catch (error) {
-        chatWindow.innerHTML += `<div class="chat-message bot-message">Sorry, something went wrong.</div>`;
-      }
+    <section>
+        <h2>Achievements</h2>
+        <ul>
+            {% for achievement in profile.achievements %}
+                <li>🎯 {{ achievement }}</li>
+            {% endfor %}
+        </ul>
+    </section>
 
-      chatWindow.scrollTop = chatWindow.scrollHeight;
-    }
-  </script>
+    <section>
+        <h2>Personal Projects</h2>
+        <ul>
+            {% for project in profile.personal_projects %}
+                <li>💡 {{ project }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <section>
+        <h2>Interests</h2>
+        <ul>
+            {% for interest in profile.interests %}
+                <li>🌐 {{ interest }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <footer>
+        <p>Connect with Bhagath</p>
+        <div class="social-links">
+            <a href="mailto:bhagath.gajbinkar@example.com">Email</a> |
+            <a href="https://www.linkedin.com/in/bhagath-gajbinkar" target="_blank">LinkedIn</a> |
+            <a href="https://github.com/Bhagath04" target="_blank">GitHub</a>
+        </div>
+        <p style="margin-top: 1rem;">© {{ profile.name }} | Have a great day! 😊</p>
+    </footer>
 </body>
 </html>
