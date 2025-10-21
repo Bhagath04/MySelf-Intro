@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Bhagath — About Me</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg-1: #0f1724;
+      --bg-2: #071029;
+      --card: rgba(255,255,255,0.06);
+      --glass: rgba(255,255,255,0.06);
+      --accent: #7c5cff;
+      --accent-2: #00d4ff;
+      --muted: rgba(255,255,255,0.65);
+      --glass-border: rgba(255,255,255,0.08);
+      --radius: 16px;
+      color-scheme: dark;
+    }
+
+    *{box-sizing:border-box}
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,0.12), transparent 8%),
+        radial-gradient(900px 400px at 85% 85%, rgba(0,212,255,0.06), transparent 12%),
+        linear-gradient(180deg,var(--bg-1) 0%, var(--bg-2) 100%);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      color:#eaf2ff;
+      line-height:1.45;
+      padding:32px;
+    }
+
+    /* layout */
+    .container{
+      max-width:1100px;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns: 360px 1fr;
+      gap:28px;
+      align-items:start;
+    }
+
+    @media (max-width:880px){
+      .container{grid-template-columns:1fr; padding:0 18px}
+    }
+
+    /* left card (profile) */
+    .profile {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: var(--radius);
+      padding:24px;
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(6px) saturate(120%);
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6), inset 0 1px rgba(255,255,255,0.02);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .avatar{
+      width:88px;
+      height:88px;
+      border-radius:14px;
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,0.06);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: linear-gradient(135deg,var(--accent), var(--accent-2));
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+      margin-bottom:16px;
+    }
+
+    .avatar svg{width:56px;height:56px;opacity:0.98;filter:drop-shadow(0 6px 18px rgba(0,0,0,0.4));}
+
+    h1{
+      margin:0 0 6px 0;
+      font-size:1.6rem;
+      letter-spacing: -0.02em;
+    }
+    .tagline{color:var(--muted); font-size:0.95rem; margin-bottom:12px}
+
+    .meta{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:18px 0;
+    }
+    .chip{
+      background:rgba(255,255,255,0.03);
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:0.88rem;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    .progress{
+      margin:10px 0 0;
+      font-size:0.88rem;
+      color:var(--muted);
+    }
+
+    .links{
+      display:flex;
+      gap:10px;
+      margin-top:18px;
+      align-items:center;
+    }
+    .btn{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#041022;
+      padding:10px 14px;
+      border-radius:12px;
+      font-weight:600;
+      border:none;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      box-shadow:0 8px 24px rgba(124,92,255,0.14);
+    }
+    .btn-ghost{
+      background:transparent;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.04);
+      padding:10px 12px;
+      border-radius:12px;
+      text-decoration:none;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    /* right column */
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+      border-radius:var(--radius);
+      border:1px solid var(--glass-border);
+      padding:24px;
+      box-shadow: 0 10px 40px rgba(2,6,23,0.5);
+    }
+
+    .bio h2{
+      margin:0 0 8px 0;
+      font-size:1.125rem;
+    }
+    .bio p{margin:0;color:var(--muted)}
+
+    .skills{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+    .skill{
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:600;
+      font-size:0.9rem;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    .projects{
+      margin-top:20px;
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+    }
+    @media (max-width:640px){ .projects{grid-template-columns:1fr} }
+
+    .project{
+      padding:14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.03);
+      transition:transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .28s;
+    }
+    .project:hover{ transform:translateY(-6px); box-shadow:0 18px 40px rgba(2,6,23,0.6) }
+
+    .project h3{margin:0 0 6px 0;font-size:1rem}
+    .project p{margin:0;color:var(--muted);font-size:0.92rem}
+
+    /* subtle animated blob in background */
+    .decor{
+      position:absolute;
+      inset:auto -80px -80px auto;
+      width:320px;
+      height:320px;
+      filter: blur(40px) saturate(120%);
+      opacity:0.14;
+      pointer-events:none;
+      transform: translate3d(0,0,0);
+    }
+
+    .footer{
+      margin-top:22px;
+      font-size:0.86rem;
+      color:var(--muted);
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:center;
+    }
+
+    /* little utilities */
+    .tiny{font-size:0.86rem;color:var(--muted)}
+    .flex{display:flex;gap:10px;align-items:center}
+
+    /* animated SVG shapes */
+    @keyframes floaty {
+      0%{transform: translateY(0) rotate(0deg)}
+      50%{transform: translateY(-12px) rotate(6deg)}
+      100%{transform: translateY(0) rotate(0deg)}
+    }
+    .float { animation: floaty 6s ease-in-out infinite }
+
+    /* accessibility focus */
+    a:focus, button:focus { outline:3px solid rgba(124,92,255,0.18); outline-offset:3px; border-radius:8px }
+  </style>
+</head>
+<body>
+  <div class="container" role="main">
+    <!-- left: profile -->
+    <aside class="profile" aria-labelledby="profile-heading">
+      <div class="decor">
+        <!-- decorative SVG blob -->
+        <svg class="float" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="width:100%;height:100%;">
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1">
+              <stop offset="0" stop-color="#7c5cff"/>
+              <stop offset="1" stop-color="#00d4ff"/>
+            </linearGradient>
+          </defs>
+          <path fill="url(#g1)" d="M421.2,335.4Q397,420.8,320.6,456.3Q244.3,491.9,171.8,457.7Q99.4,423.5,65.6,349.2Q31.8,274.8,60.6,205.6Q89.3,136.4,162.1,99.2Q235,62,312.5,88.2Q390,114.4,429.2,184.1Q468.4,253.8,421.2,335.4Z"/>
+        </svg>
+      </div>
+
+      <div class="avatar" aria-hidden="true">
+        <!-- Generic avatar icon; replace with personal photo for best results -->
+        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Avatar placeholder">
+          <rect width="80" height="80" rx="18" fill="rgba(255,255,255,0.12)"/>
+          <g transform="translate(10,10)" fill="#fff">
+            <circle cx="30" cy="20" r="12" fill="white" opacity="0.95"></circle>
+            <path d="M4 50c9-8 47-8 52 0v2c0 6-8 14-26 14S10 58 10 52v-2z" fill="white" opacity="0.95"></path>
+          </g>
+        </svg>
+      </div>
+
+      <h1 id="profile-heading">Bhagath</h1>
+      <div class="tagline">Developer · Learner · Problem-solver</div>
+
+      <div class="meta" aria-hidden="false">
+        <div class="chip">Location: India</div>
+        <div class="chip">Open to collaborate</div>
+      </div>
+
+      <div class="progress">
+        <strong style="color:var(--accent)">Currently learning:</strong> Advanced React patterns, TypeScript, and UI/UX design
+      </div>
+
+      <div class="links" role="navigation" aria-label="Profile actions">
+        <a class="btn" href="#contact" id="contact-btn" title="Contact">
+          Contact
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 8v10a2 2 0 0 1-2 2H5l-4 4V6a2 2 0 0 1 2-2h14" stroke="#041022" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </a>
+        <a class="btn-ghost" href="#" id="download-cv">
+          Download CV
+        </a>
+      </div>
+
+      <div class="footer">
+        <div class="tiny">Built with ❤️ and curiosity</div>
+        <div class="tiny">Last updated: <time datetime="2025-10-21">2025-10-21</time></div>
+      </div>
+    </aside>
+
+    <!-- right: content -->
+    <section class="card" aria-labelledby="about-heading">
+      <div class="bio">
+        <h2 id="about-heading">Hello — I'm Bhagath</h2>
+        <p>I'm a software developer who enjoys turning ideas into clean, delightful user experiences. I work across frontend and full-stack stacks, focusing on React, modern JavaScript, and accessible interfaces.</p>
+
+        <div class="skills" aria-hidden="false" title="Skills">
+          <div class="skill">JavaScript / ESNext</div>
+          <div class="skill">React</div>
+          <div class="skill">TypeScript</div>
+          <div class="skill">Node.js</div>
+          <div class="skill">HTML & CSS</div>
+        </div>
+      </div>
+
+      <div class="projects" aria-label="Selected projects">
+        <article class="project" aria-labelledby="p1">
+          <h3 id="p1">MySelf-Intro (this repo)</h3>
+          <p>A simple personal intro site. I updated it to have a modern layout, better accessibility, and visuals that reflect personality.</p>
+        </article>
+
+        <article class="project" aria-labelledby="p2">
+          <h3 id="p2">Project Two</h3>
+          <p>Short description placeholder. Replace with details about any project you want to highlight.</p>
+        </article>
+
+        <article class="project" aria-labelledby="p3">
+          <h3 id="p3">Open-source contributions</h3>
+          <p>Active on GitHub — I contribute to tooling, documentation, and small libraries that improve developer experience.</p>
+        </article>
+
+        <article class="project" aria-labelledby="p4">
+          <h3 id="p4">Learning & experiments</h3>
+          <p>Exploring creative UI, animations, and progressive enhancement to make interfaces feel more alive.</p>
+        </article>
+      </div>
+
+      <div id="contact" style="margin-top:18px">
+        <h3>Get in touch</h3>
+        <p class="tiny">Prefer email? Click to copy my email to clipboard.</p>
+        <div style="margin-top:8px" class="flex" role="group" aria-label="contact actions">
+          <button class="btn" id="copy-email">Copy email</button>
+          <a class="btn-ghost" href="mailto:your-email@example.com" id="email-link">Email me</a>
+          <a class="btn-ghost" href="https://github.com/Bhagath04" target="_blank" rel="noopener" aria-label="GitHub profile">GitHub</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Small interactive bits: email copy and CV download simulation
+    (function(){
+      const email = 'your-email@example.com'; // replace with your email
+      const copyBtn = document.getElementById('copy-email');
+      const downloadBtn = document.getElementById('download-cv');
+
+      copyBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(email);
+          copyBtn.textContent = 'Copied!';
+          setTimeout(()=> copyBtn.textContent = 'Copy email', 1800);
+        } catch(e) {
+          alert('Copy failed. Email: ' + email);
+        }
+      });
+
+      // Simulate cv download; if you have a real file, replace href with actual URL
+      downloadBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const link = document.createElement('a');
+        link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent('Bhagath — CV\n\nReplace with a real CV file or link.');
+        link.download = 'Bhagath-CV.txt';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      });
+
+      // Smooth in-page navigation
+      document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', (ev) => {
+          const id = a.getAttribute('href').slice(1);
+          const el = document.getElementById(id);
+          if(el){ ev.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'center'}); }
+        });
+      });
+
+    })();
+  </script>
+</body>
+</html>
